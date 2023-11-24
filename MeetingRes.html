@@ -186,48 +186,53 @@
                     notificationFlag = "1";
                 }
 
-                alert("请重新确定会议开始时间！");
 
-                liff.init({
-                    liffId: '2001647150-3Kz4XdWn'
-                })
-                    .then(async () => {
-                        if (liff.isLoggedIn()) {
-                            liff
-                                .getProfile()
-                                .then((profile) => {
-                                    const userId = profile.userId;
-                                    const msg =
-                                        `${LOADING_URL + "&name=" + name}${"&meetingDate=" + meetingDate + "&meetingTimeStart=" + meetingTimeStart + "&meetingTimeEnd=" + meetingTimeEnd}${"&meetingRoomNum=" + meetingRoomNum}${"&notificationFlag=" + notificationFlag}${"&user_id=" + userId}`;
-                                    window.location.href = msg;
-                                })
-                                .catch((err) => {
-                                    window.alert("error" + err);
-                                });
-                        } else {
-                            liff.login();
-                            liff
-                                .getProfile()
-                                .then((profile) => {
-                                    const userId = profile.userId;
-                                    const msg =
-                                        `${LOADING_URL + "&name=" + name}${"&meetingDate=" + meetingDate + "&meetingTimeStart=" + meetingTimeStart + "&meetingTimeEnd=" + meetingTimeEnd}${"&meetingRoomNum=" + meetingRoomNum}${"&notificationFlag=" + notificationFlag}${"&user_id=" + userId}`;
-                                    window.location.href = msg;
-                                })
-                                .catch((err) => {
-                                    window.alert("error" + err);
-                                });
-                        }
+                if (meetingTimeStart >= meetingTimeEnd) {
+                    // 会议开始时间早于等于会议结束时间时触发警告
+                    alert("请重新确定会议开始时间！");
+                } else {
+
+                    liff.init({
+                        liffId: '2001647150-3Kz4XdWn'
                     })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+                        .then(async () => {
+                            if (liff.isLoggedIn()) {
+                                liff
+                                    .getProfile()
+                                    .then((profile) => {
+                                        const userId = profile.userId;
+                                        const msg =
+                                            `${LOADING_URL + "&name=" + name}${"&meetingDate=" + meetingDate + "&meetingTimeStart=" + meetingTimeStart + "&meetingTimeEnd=" + meetingTimeEnd}${"&meetingRoomNum=" + meetingRoomNum}${"&notificationFlag=" + notificationFlag}${"&user_id=" + userId}`;
+                                        window.location.href = msg;
+                                    })
+                                    .catch((err) => {
+                                        window.alert("error" + err);
+                                    });
+                            } else {
+                                liff.login();
+                                liff
+                                    .getProfile()
+                                    .then((profile) => {
+                                        const userId = profile.userId;
+                                        const msg =
+                                            `${LOADING_URL + "&name=" + name}${"&meetingDate=" + meetingDate + "&meetingTimeStart=" + meetingTimeStart + "&meetingTimeEnd=" + meetingTimeEnd}${"&meetingRoomNum=" + meetingRoomNum}${"&notificationFlag=" + notificationFlag}${"&user_id=" + userId}`;
+                                        window.location.href = msg;
+                                    })
+                                    .catch((err) => {
+                                        window.alert("error" + err);
+                                    });
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                }
 
 
 
                 setTimeout(function () {
                     hide();
-                }, 5000);
+                }, 3000);
 
             });
         });

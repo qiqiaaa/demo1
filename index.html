@@ -1,0 +1,109 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会議室の予約</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.min.css">
+</head>
+<body>
+
+    <form class="w-75 mx-auto">
+        <p class="mt-3">会議室の概要</p>
+        <div>
+            <input class="form-control w-100 mt-1" name="name" placeholder="" required>
+        </div>
+        <p class="mt-3">予約会議日期</p>
+        <div>
+            <input type="date" class="meetingdate" name="meetingdate" id="meetingdate" required>
+            
+        </div>
+        <div>
+            <input type="time" class="seltimestart" name="seltimestart" id="seltimestart" required>
+        <font>開始時間</font>
+        </div> 
+        <div>
+            <input type="time" class="seltimeend" name="seltimeend" id="seltimeend" required>
+        <font>終了時間</font>
+        </div> 
+        <p class="mt-3">ミーティングルーム番号</p>
+        <div>
+            <select id="meetingroom">
+                <option value ="001">第１会議室</option>
+                <option value ="002">第２会議室</option>
+                <option value="003">第３会議室</option>
+                <option value="004">第４会議室</option>
+            </select>
+        </div>
+
+        
+        <input type="submit" class="mt-4 btn btn-primary" value="送信">
+    </form>
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script>
+        
+        $(document).ready(function () {
+            const liffId = "1656977708-3LzXW8n5";
+            initializeLiff(liffId);
+        })
+
+        function initializeLiff(liffId) {
+            var time = new Date();
+            var day = ("0" + time.getDate()).slice(-2);
+            var month = ("0" + (time.getMonth() + 1)).slice(-2);
+            var today = time.getFullYear() + "-" + (month) + "-" + (day);
+            var hour = time.getHours();
+            var minute = time.getMinutes();
+            var nowTime = hour + ":" + minute;
+            var nowTimeEnd = hour + ":" + (minute + 1);
+            $('#meetingdate').val(today);
+            $('#seltimestart').val(nowTime);
+            $('#seltimeend').val(nowTimeEnd);
+            liff.init({
+                liffId: liffId
+            }).then((data) => {
+                initializeApp();
+            }).catch((err) => {
+                console.log('LIFF Initialization failed ', err);
+            });
+        }
+
+        function sendText(text) {
+            liff.sendMessages([{
+                'type': 'text',
+                'text': text
+            }]).then(function () {
+                liff.closeWindow();
+            }).catch(function (error) {
+                window.alert('Failed to send message ' + error);
+            });
+        }
+        
+        const params = (new URL(document.location)).searchParams;
+        const key = params.get('key');
+
+        $(function () {
+            $('form').submit(function () {
+                const name    = $('input[name="name"]').val();
+                const meetingdate    = $('input[name="meetingdate"]').val();
+                const meetingtimestart  = $('input[name="seltimestart"]').val();
+                const meetingtimeend  = $('input[name="seltimeend"]').val();
+                const meetingroomnum=$("#meetingroom option:selected").val();
+
+                const msg = `${name}\n${meetingdate+" "+meetingtimestart}\n${meetingdate+" "+meetingtimeend}\n${meetingroomnum}`;
+                sendText("会議室の予約：\n"+msg);
+
+                return false;
+            });
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  	<meta charset="utf-8" />
+    <style>
+      div.TextLabel {
+        font-size: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="w-75 mx-auto">
+    <div class="TextLabel">
+      <center>
+        <p id="p1">user綁定</p>
+        <p id="p2"> Line AccessToken:</p>
+        <p id="p3"> ユーザーステータス:</p>
+        <p id="p4"> ユーザー名前:</p>
+        <p id="p5"> 購読日:</p>
+        <br /><img src="https://drive.google.com/file/d/1fuKbzF4AVZOVxQWJa4WnM6IcGfjIUPO0/view?usp=sharing">
+        <input type="submit" class="mt-4 btn btn-primary" style="height:300px;width:300px" value="送信">
+      </center>
+    </div>
+     
+    
+    </form>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script>
+      $(document).ready(function () {
+            const liffId = "1656977708-yznbkJe2";
+            initializeLiff(liffId);
+            // const access_token = document.getElementById("p21").textContent;
+            // const target_type = document.getElementById("p31").textContent;
+            // const target_str = document.getElementById("p41").textContent;
+            // const submit_date = document.getElementById("p51").textContent;
+            // const url_str = "https://liff.line.me/1656977708-yznbkJe2"+"?access_token="+access_token+"&target_type="+target_type
+            // window.alert(url_str);
+            // window.location.href = url_str;
+            // window.location.href="https://www.baidu.com";
+                // const msg = `${name}\n${meetingdate}\n${meetingtimestart}\n${meetingtimeend}\n${meetingroomnum}`;
+                // sendText("Line Notify 预定成功：\n"+msg);
+                // alert(msg);
+        })
+
+        function initializeLiff(liffId) {
+            
+            liff.init({
+                liffId: liffId
+            }).then((data) => {
+                initializeApp();
+                // const name    = serviceName;
+                // const meetingdate    = submitDate;
+                // const meetingtimestart  = accessToken;
+                // const meetingtimeend  = targetType;
+                // const meetingroomnum=target;
+
+                // const msg = `${name}\n${meetingdate}\n${meetingtimestart}\n${meetingtimeend}\n${meetingroomnum}`;
+                // sendText("Line Notify 预定成功：\n"+msg);
+              sendText("發送：\n");
+                // return false;
+            }).catch((err) => {
+                console.log('LIFF Initialization failed ', err);
+            });
+        }
+
+        function sendText(text) {
+            liff.sendMessages([{
+                'type': 'text',
+                'text': text
+            }]).then(function () {
+                liff.closeWindow();
+            }).catch(function (error) {
+                window.alert('Failed to send message ' + error);
+            });
+        }
+        $(function () {
+            $('form').submit(function () {
+                // const name    = serviceName;
+                // const meetingdate    = submitDate;
+                // const meetingtimestart  = accessToken;
+                // const meetingtimeend  = targetType;
+                // const meetingroomnum=target.val();
+
+                // const msg = `${name}\n${meetingdate}\n${meetingtimestart}\n${meetingtimeend}\n${meetingroomnum}`;
+                // sendText("Line Notify 预定成功：\n"+msg);
+                // window.location.href="https://liff.line.me/1656977708-yznbkJe2"+"?access_token="+access_token+"&target_type="+target_type;
+                // window.location.href = "https://mrsjiaweifan.github.io/liffformtest/index.html";
+              const liffId = "1656977708-yznbkJe2";
+            initializeLiff(liffId);
+                
+                return false;
+            });
+        });
+
+</script>
+</html>
